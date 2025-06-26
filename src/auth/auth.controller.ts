@@ -1,21 +1,28 @@
-import { Controller, Post, Body, Get, UseGuards, Req } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Request, Get } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from '../guard/jwt.guard';
-import { Request } from 'express';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  /**
+   * Endpoint de login — gera o token
+   */
   @Post('login')
-  async login(@Body() body: { email: string; password: string }) {
-    return this.authService.login(body.email, body.password);
+  async login(
+    @Body() body: { email: string; password: string },
+  ) {
+    const { email, password } = body;
+    return this.authService.login(email, password);
   }
 
+  /**
+   * Endpoint para buscar perfil do usuário logado
+   */
   @UseGuards(JwtAuthGuard)
   @Get('profile')
-  async profile(@Req() req: Request) {
-    const user = req.user as { sub: number };
-    return this.authService.profile(user.sub);
+  getProfile(@Request() req) {
+    return this.authService.profile(req.user.sub);
   }
 }
