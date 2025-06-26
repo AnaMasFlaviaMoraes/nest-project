@@ -26,6 +26,22 @@ model User {
   email     String   @unique
   password  String
   role      Role     @default(USER)
+  permissions Permission[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Permission {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  module    ModuleName
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+  @@unique([userId, module])
+}
+
+enum ModuleName {
+  FINANCEIRO
+  RELATORIOS
+  PRODUTOS
 }
