@@ -7,7 +7,8 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { PermissionsService } from '../permissions/permissions.service';
-import { ROLES_KEY } from '../auth/roles.decorator';
+import { ROLES_KEY } from '../common/decorator/roles.decorator';
+import { ModuleName } from '@prisma/client';
 
 @Injectable()
 export class ModulePermissionGuard implements CanActivate {
@@ -17,10 +18,10 @@ export class ModulePermissionGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const requiredModule = this.reflector.getAllAndOverride<string>('module', [
-      context.getHandler(),
-      context.getClass(),
-    ]);
+    const requiredModule = this.reflector.getAllAndOverride<ModuleName>(
+      'module',
+      [context.getHandler(), context.getClass()],
+    );
 
     if (!requiredModule) {
       return true;

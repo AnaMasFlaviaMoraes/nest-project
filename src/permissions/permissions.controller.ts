@@ -9,7 +9,8 @@ import {
 import { PermissionsService } from './permissions.service';
 import { JwtAuthGuard } from '../guard/jwt.guard';
 import { RolesGuard } from '../guard/roles.guard';
-import { Roles } from '../auth/roles.decorator';
+import { Roles } from '../common/decorator/roles.decorator';
+import { ModuleName } from '@prisma/client';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('permissions')
@@ -20,7 +21,7 @@ export class PermissionsController {
   @Roles('ADMIN', 'SUPERUSER')
   grantPermission(
     @Param('userId') userId: string,
-    @Param('module') module: string,
+    @Param('module') module: ModuleName,
   ) {
     return this.permissionsService.grantPermission(+userId, module);
   }
@@ -29,7 +30,7 @@ export class PermissionsController {
   @Roles('ADMIN', 'SUPERUSER')
   revokePermission(
     @Param('userId') userId: string,
-    @Param('module') module: string,
+    @Param('module') module: ModuleName,
   ) {
     return this.permissionsService.revokePermission(+userId, module);
   }
@@ -40,4 +41,3 @@ export class PermissionsController {
     return this.permissionsService.listPermissions(+userId);
   }
 }
-
