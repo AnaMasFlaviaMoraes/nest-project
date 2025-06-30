@@ -29,7 +29,6 @@ async function main() {
 
   console.log('Usuários criados ✅');
 
-  // 📦 Produtos
   await prisma.product.createMany({
     data: [
       {
@@ -48,7 +47,6 @@ async function main() {
 
   console.log('Produtos criados ✅');
 
-  // 💰 Registros financeiros
   await prisma.financeRecord.createMany({
     data: [
       {

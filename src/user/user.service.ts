@@ -19,7 +19,7 @@ export class UserService {
         name: data.name,
         email: data.email,
         password: hashedPassword,
-        role: data.role || 'USER', // 🔥 Se não informar, assume USER
+        role: data.role || 'USER', // Se não informar, padrão é 'USER'
       },
     });
   }
@@ -81,12 +81,6 @@ export class UserService {
     if (!user) {
       throw new NotFoundException('Usuário não encontrado');
     }
-
-    // let hashedPassword: string | undefined = undefined;
-
-    // if (data.password) {
-    //   hashedPassword = await bcrypt.hash(data.password, 10);
-    // }
 
     return this.prisma.user.update({
       where: { id },
