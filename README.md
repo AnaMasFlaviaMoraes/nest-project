@@ -1,98 +1,185 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+# 🚀 API de Gestão de Acessos e Permissões
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+API desenvolvida com **NestJS + Prisma + PostgreSQL/SQLite**, que implementa controle de usuários, autenticação via JWT, gestão de permissões por módulos e controle de acesso robusto.
 
-## Description
+---
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 🔐 **Módulos do Sistema:**
+- ✅ **Gestão de Usuários** (Apenas Admin e Superuser)
+- ✅ **Perfil** (Todos os usuários)
+- ✅ **Financeiro** (Acesso via role ou permissão)
+- ✅ **Produtos** (Acesso via role ou permissão)
+- ✅ **Relatórios** (Acesso via role ou permissão)
 
-## Project setup
+---
 
-```bash
-$ npm install
+## ⚙️ **Autenticação**
+- Autenticação via **JWT**
+- Roles disponíveis:
+  - `SUPERUSER`
+  - `ADMIN`
+  - `USER`
+- Permissões específicas por módulo:
+  - `FINANCEIRO`
+  - `PRODUTOS`
+  - `RELATORIOS`
+
+---
+
+## 🎯 **Principais Rotas da API**
+
+---
+
+## 🔑 **Auth (Autenticação)**
+| Método | Rota           | Descrição             |
+|--------|----------------|-----------------------|
+| POST   | `/auth/login`  | Login e retorno de token |
+
+✔️ **Body:**
+```json
+{
+  "email": "usuario@email.com",
+  "password": "senha"
+}
 ```
 
-## Compile and run the project
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+✔️ **Resposta:**
+```json
+{
+  "access_token": "TOKEN_JWT"
+}
 ```
 
-## Run tests
+---
 
+## 👤 **Perfil**
+| Método | Rota           | Descrição                 |
+|--------|----------------|---------------------------|
+| GET    | `/profile`     | Ver seu próprio perfil    |
+| PATCH  | `/profile`     | Editar seu próprio perfil |
+
+---
+
+## 👥 **Usuários**
+| Método | Rota           | Descrição                            |
+|--------|----------------|---------------------------------------|
+| POST   | `/users`       | Criar usuário (apenas ADMIN/SUPER)   |
+| GET    | `/users`       | Listar todos os usuários (ADMIN/SUPER) |
+| GET    | `/users/:id`   | Ver usuário específico (ADMIN/SUPER) |
+| PATCH  | `/users/:id`   | Atualizar usuário (ADMIN/SUPER)      |
+| DELETE | `/users/:id`   | Remover usuário (ADMIN/SUPER)        |
+
+---
+
+## 📦 **Produtos**
+| Método | Rota            | Descrição                       |
+|--------|-----------------|----------------------------------|
+| POST   | `/products`     | Criar produto (ADMIN/SUPER)     |
+| GET    | `/products`     | Listar produtos (com permissão) |
+| GET    | `/products/:id` | Ver produto                     |
+| PATCH  | `/products/:id` | Atualizar (ADMIN/SUPER)         |
+| DELETE | `/products/:id` | Deletar (ADMIN/SUPER)           |
+
+---
+
+## 💰 **Financeiro**
+| Método | Rota           | Descrição                          |
+|--------|----------------|-------------------------------------|
+| POST   | `/finance`     | Criar registro financeiro (ADMIN/SUPER) |
+| GET    | `/finance`     | Listar registros (com permissão)  |
+| GET    | `/finance/:id` | Ver registro específico           |
+| PATCH  | `/finance/:id` | Atualizar registro (ADMIN/SUPER)  |
+| DELETE | `/finance/:id` | Deletar registro (ADMIN/SUPER)    |
+
+---
+
+## 📊 **Relatórios**
+| Método | Rota               | Descrição                         |
+|--------|--------------------|------------------------------------|
+| GET    | `/reports/finance` | Relatório financeiro              |
+| GET    | `/reports/products`| Relatório de produtos             |
+| GET    | `/reports/users`   | Relatório de usuários por role    |
+
+---
+
+## 🔐 **Permissões**
+| Método | Rota                              | Descrição                                 |
+|--------|------------------------------------|--------------------------------------------|
+| POST   | `/permissions/:userId/:module`    | ✅ Dá permissão ao usuário para um módulo  |
+| DELETE | `/permissions/:userId/:module`    | ❌ Revoga permissão do usuário             |
+| GET    | `/permissions/:userId`            | 🔎 Lista permissões do usuário             |
+
+✔️ **Módulos válidos:**  
+- `FINANCEIRO`  
+- `PRODUTOS`  
+- `RELATORIOS`  
+
+---
+
+## 🔐 **Regras de acesso:**
+- 🔥 `SUPERUSER` → Acesso total.
+- 🔥 `ADMIN` → Acesso total, exceto funções específicas do SUPERUSER.
+- 🔥 `USER` → Acesso restrito apenas aos módulos que possuir permissão explícita.
+
+---
+
+## 🧠 **Tecnologias utilizadas:**
+- NestJS
+- Prisma ORM
+- SQLite ou PostgreSQL
+- JWT (Auth)
+- Bcrypt (Hash de senha)
+
+---
+
+## 🏁 **Rodando o Prisma Studio:**
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npx prisma studio
 ```
 
-## Deployment
+---
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
+## 🚀 **Rodando o projeto:**
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+npm install
+npx prisma migrate dev
+npx prisma generate
+npm run start:dev
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+---
 
-## Resources
+## 🛠️ **Observação importante:**
+- Um **superusuário é criado automaticamente** na inicialização do projeto:
+  - **Email:** `super@admin.com`
+  - **Senha:** `super` (hash já aplicado)
+  - ✅ Esse usuário pode criar administradores e usuários comuns, além de gerenciar todas as permissões.
 
-Check out a few resources that may come in handy when working with NestJS:
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+## 🌱 Seed de Dados
 
-## Support
+O projeto contém um script de seed que popula automaticamente o banco de dados com:
+🔑 Usuários:
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+  - Administrador → Email: admin@admin.com | Senha: admin
+  - Usuário comum → Email: user@user.com | Senha: user
 
-## Stay in touch
+📦 Produtos:
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+  - Câmera Canon R6
+  - Lente 50mm
+  - Tripé Profissional
 
-## License
+💰 Financeiro:
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+  - Venda de ensaio fotográfico (Entrada)
+  - Compra de lente 50mm (Saída)
+  - Pagamento de aluguel do estúdio (Saída)
+  - Venda de sessão premium (Entrada)
+
+### 🏁 Rode o seed:
+
+```bash
+npm run seed
+```
